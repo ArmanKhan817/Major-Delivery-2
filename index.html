@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Major Delivery 2 - Practical Assessment</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      color: #ffffff;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: auto;
+      padding: 22px 14px 35px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 28px 16px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    h1 { margin: 0 0 8px; font-size: 34px; }
+
+    .subtitle {
+      color: #cbd5e1;
+      font-size: 18px;
+      margin: 8px 0;
+    }
+
+    .info-box {
+      margin-top: 18px;
+      text-align: left;
+      background: rgba(15, 23, 42, 0.75);
+      padding: 18px;
+      border-radius: 16px;
+      line-height: 1.6;
+    }
+
+    .timer {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      margin: 18px 0;
+      padding: 14px;
+      border-radius: 16px;
+      text-align: center;
+      background: #0ea5e9;
+      color: #082f49;
+      font-size: 24px;
+      font-weight: bold;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+    }
+
+    .card {
+      margin-top: 20px;
+      padding: 22px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+    }
+
+    h2 { color: #38bdf8; }
+
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: none;
+      margin-top: 8px;
+      font-size: 16px;
+    }
+
+    .question {
+      margin: 18px 0;
+      padding: 18px;
+      border-radius: 14px;
+      background: rgba(15, 23, 42, 0.75);
+    }
+
+    button {
+      margin: 7px 5px;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+      background: #38bdf8;
+      color: #082f49;
+      font-weight: bold;
+      min-height: 44px;
+    }
+
+    button:hover { background: #7dd3fc; }
+
+    button:disabled {
+      background: #64748b;
+      color: #e2e8f0;
+      cursor: not-allowed;
+    }
+
+    .feedback {
+      margin-top: 10px;
+      font-weight: bold;
+      min-height: 24px;
+    }
+
+    .correct { color: #86efac; }
+    .wrong { color: #fca5a5; }
+
+    .post-box {
+      background: #f8fafc;
+      color: #0f172a;
+      padding: 18px;
+      border-radius: 15px;
+      line-height: 1.5;
+    }
+
+    .tag, .permission, .setting {
+      display: inline-block;
+      margin: 5px;
+      padding: 9px 11px;
+      border-radius: 20px;
+      background: #e0f2fe;
+      color: #075985;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .tag:hover, .permission:hover, .setting:hover { background: #bae6fd; }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .profile {
+      background: #f8fafc;
+      color: #0f172a;
+      padding: 16px;
+      border-radius: 15px;
+      line-height: 1.5;
+    }
+
+    .profile h3 {
+      margin-top: 0;
+      color: #075985;
+    }
+
+    .result {
+      font-size: 18px;
+      padding: 20px;
+      border-radius: 18px;
+      background: rgba(14,165,233,0.18);
+      margin-top: 20px;
+      display: none;
+      line-height: 1.6;
+      word-break: break-word;
+    }
+
+    .notice {
+      padding: 12px;
+      border-radius: 12px;
+      margin-top: 12px;
+      background: rgba(255,255,255,0.12);
+      display: none;
+      line-height: 1.5;
+    }
+
+    .footer {
+      text-align: center;
+      color: #cbd5e1;
+      margin-top: 30px;
+      font-size: 14px;
+    }
+
+    .progress {
+      height: 14px;
+      width: 100%;
+      background: #334155;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+
+    .bar {
+      height: 100%;
+      width: 0%;
+      background: #38bdf8;
+      transition: 0.4s;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 26px; }
+      .subtitle { font-size: 16px; }
+      .card { padding: 17px; }
+      button {
+        width: 100%;
+        margin: 7px 0;
+        font-size: 16px;
+      }
+      .timer { font-size: 21px; }
+      .profile-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>Major Delivery 2</h1>
+      <p class="subtitle">Date: 06 June 2026</p>
+      <p class="subtitle"><strong>Part 2: Practical Assessment</strong></p>
+      <p>Topic: Digital Footprint & Online Privacy</p>
+
+      <div class="info-box">
+        <strong>Assessment Type:</strong> Open Book<br>
+        <strong>Discussion:</strong> You can discuss with others<br>
+        <strong>Assessment Time:</strong> 10 minutes<br>
+        <strong>Device:</strong> This activity works on mobile phones, tablets, and computers<br>
+        <strong>Instruction:</strong> Enter your name and complete the activity. Your result will be shown on screen and submitted to the trainer.
+      </div>
+
+      <div class="progress"><div class="bar" id="bar"></div></div>
+    </section>
+
+    <div class="timer" id="timer">Time Remaining: 10:00</div>
+
+    <section class="card">
+      <h2>Learner Details</h2>
+      <label for="learnerName">Learner Name</label>
+      <input type="text" id="learnerName" placeholder="Type your full name here" />
+
+      <label for="trainerName">Trainer / Assessor Name</label>
+      <input type="text" id="trainerName" value="Arman Khan" />
+    </section>
+
+    <section class="card">
+      <h2>Activity 1: What Should You Not Share?</h2>
+      <p>Click the risky information in this social media post.</p>
+
+      <div class="post-box">
+        <strong>Sarah Ahmed</strong><br>
+        So excited! Flying to Melbourne tomorrow for 2 weeks ✈️<br>
+        My birthday is <span class="tag" onclick="multiClick(this, 'tag')">15 March 2000</span> and I live near 
+        <span class="tag" onclick="multiClick(this, 'tag')">Bankstown Station</span>.<br>
+        I also got my new student ID card today! 
+        <span class="tag" onclick="multiClick(this, 'tag')">Student ID photo</span><br>
+        #holiday #travel #newlife
+      </div>
+
+      <div class="feedback" id="tagFeedback"></div>
+    </section>
+
+    <section class="card">
+      <h2>Activity 2: Safe or Risky?</h2>
+
+      <div class="question">
+        <p><strong>1. Posting your boarding pass photo online before travel.</strong></p>
+        <button onclick="answer(this, false)">Safe</button>
+        <button onclick="answer(this, true)">Risky</button>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="question">
+        <p><strong>2. Turning off location sharing for social media apps.</strong></p>
+        <button onclick="answer(this, true)">Safe</button>
+        <button onclick="answer(this, false)">Risky</button>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="question">
+        <p><strong>3. Allowing a flashlight app to access your contacts and microphone.</strong></p>
+        <button onclick="answer(this, false)">Safe</button>
+        <button onclick="answer(this, true)">Risky</button>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="question">
+        <p><strong>4. Checking app permissions before installing an app.</strong></p>
+        <button onclick="answer(this, true)">Safe</button>
+        <button onclick="answer(this, false)">Risky</button>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Activity 3: Choose the Best Action</h2>
+
+      <div class="question">
+        <p><strong>A social media app asks for access to your location all the time. What should you do?</strong></p>
+        <button onclick="answer(this, false)">Allow everything</button>
+        <button onclick="answer(this, true)">Allow only while using the app</button>
+        <button onclick="answer(this, false)">Ignore it</button>
+        <div class="feedback"></div>
+      </div>
+
+      <div class="question">
+        <p><strong>You see an old post showing your home address. What is the safest action?</strong></p>
+        <button onclick="answer(this, false)">Leave it online</button>
+        <button onclick="answer(this, true)">Delete or hide the post</button>
+        <button onclick="answer(this, false)">Share it again</button>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Activity 4: Fake Profile Detector</h2>
+      <p>Review the two profiles and choose the suspicious one.</p>
+
+      <div class="profile-grid">
+        <div class="profile">
+          <h3>Profile A</h3>
+          <p><strong>Name:</strong> Tech Support Helpdesk</p>
+          <p><strong>Username:</strong> @support_help_9981</p>
+          <p><strong>Followers:</strong> 2</p>
+          <p><strong>Bio:</strong> Click this link to verify your account now.</p>
+        </div>
+
+        <div class="profile">
+          <h3>Profile B</h3>
+          <p><strong>Name:</strong> Local Library</p>
+          <p><strong>Username:</strong> @bankstownlibrary</p>
+          <p><strong>Followers:</strong> 8,450</p>
+          <p><strong>Bio:</strong> Community programs, events and reading resources.</p>
+        </div>
+      </div>
+
+      <div class="question">
+        <p><strong>Which profile looks more suspicious?</strong></p>
+        <button onclick="answer(this, true)">Profile A</button>
+        <button onclick="answer(this, false)">Profile B</button>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Activity 5: App Permission Challenge</h2>
+      <p>A simple flashlight app asks for the permissions below. Click the suspicious permissions.</p>
+
+      <div class="post-box">
+        Flashlight App wants access to:<br><br>
+        <span class="permission" onclick="multiClick(this, 'permission')">Contacts</span>
+        <span class="permission" onclick="multiClick(this, 'permission')">Microphone</span>
+        <span class="permission" onclick="multiClick(this, 'permission')">Location</span>
+        <span class="permission" onclick="multiClick(this, 'permission')">Camera Flash</span>
+      </div>
+
+      <div class="feedback" id="permissionFeedback"></div>
+    </section>
+
+    <section class="card">
+      <h2>Activity 6: Public Wi-Fi Decision Game</h2>
+      <p>You are using free Wi-Fi in a café. Choose the safest action.</p>
+
+      <div class="question">
+        <p><strong>What should you do when using public Wi-Fi?</strong></p>
+        <button onclick="answer(this, false)">Open online banking and enter password</button>
+        <button onclick="answer(this, false)">Enter credit card details on an unknown site</button>
+        <button onclick="answer(this, true)">Use VPN or avoid sensitive logins</button>
+        <button onclick="answer(this, false)">Connect to any Wi-Fi with the word “Free”</button>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Activity 7: Privacy Settings Challenge</h2>
+      <p>Click the safe privacy settings for a social media account.</p>
+
+      <div class="post-box">
+        Choose safe settings:<br><br>
+        <span class="setting" onclick="multiClick(this, 'setting')">Private Account</span>
+        <span class="setting" onclick="wrongMultiClick(this)">Public Location Sharing</span>
+        <span class="setting" onclick="multiClick(this, 'setting')">Two-Factor Authentication</span>
+        <span class="setting" onclick="wrongMultiClick(this)">Show Birthday Publicly</span>
+        <span class="setting" onclick="multiClick(this, 'setting')">Review Tagged Posts</span>
+      </div>
+
+      <div class="feedback" id="settingFeedback"></div>
+    </section>
+
+    <section class="card">
+      <h2>Assessment Result</h2>
+      <p>Click below after completing all activities. Your result will appear on screen and will be submitted automatically.</p>
+      <button onclick="showResult()">Submit My Result</button>
+      <div class="notice" id="submitNotice"></div>
+      <div class="result" id="result"></div>
+    </section>
+
+    <div class="footer">
+      Presented by Arman Khan | BSBXCS402 Cyber Security Awareness Activity
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuWoQmzFErX1uOPXtgxGiuRiqtU6h1l_9vIcfyp06uUBruutJFwmjcLlFqSgeoCpv6sw/exec";
+
+    let score = 0;
+    let maxScore = 17;
+    let timeLeft = 10 * 60;
+    let assessmentFinished = false;
+
+    const timerDisplay = document.getElementById("timer");
+
+    function updateBar() {
+      const percent = Math.min((score / maxScore) * 100, 100);
+      document.getElementById("bar").style.width = percent + "%";
+    }
+
+    function multiClick(el, type) {
+      if (assessmentFinished) return;
+      if (el.dataset.clicked) return;
+      el.dataset.clicked = "true";
+      el.style.background = "#bbf7d0";
+      el.style.color = "#14532d";
+      score++;
+      updateBar();
+
+      if (type === "tag") {
+        document.getElementById("tagFeedback").innerHTML =
+          "Good catch! Personal details can increase privacy and identity theft risk.";
+        document.getElementById("tagFeedback").className = "feedback correct";
+      }
+
+      if (type === "permission") {
+        document.getElementById("permissionFeedback").innerHTML =
+          "Correct. A flashlight app does not usually need contacts, microphone, or location.";
+        document.getElementById("permissionFeedback").className = "feedback correct";
+      }
+
+      if (type === "setting") {
+        document.getElementById("settingFeedback").innerHTML =
+          "Correct. These settings help protect your online privacy.";
+        document.getElementById("settingFeedback").className = "feedback correct";
+      }
+    }
+
+    function wrongMultiClick(el) {
+      if (assessmentFinished) return;
+      if (el.dataset.clicked) return;
+      el.dataset.clicked = "true";
+      el.style.background = "#fecaca";
+      el.style.color = "#7f1d1d";
+      document.getElementById("settingFeedback").innerHTML =
+        "Not quite. Public location and public birthday can expose personal information.";
+      document.getElementById("settingFeedback").className = "feedback wrong";
+    }
+
+    function answer(btn, isCorrect) {
+      if (assessmentFinished) return;
+      const question = btn.parentElement;
+      if (question.dataset.done) return;
+      question.dataset.done = "true";
+
+      const buttons = question.querySelectorAll("button");
+      buttons.forEach(b => b.disabled = true);
+
+      const feedback = question.querySelector(".feedback");
+      if (isCorrect) {
+        score++;
+        feedback.innerHTML = "Correct! This is the safer cyber security choice.";
+        feedback.className = "feedback correct";
+      } else {
+        feedback.innerHTML = "Not quite. Think about privacy, safety, and data protection.";
+        feedback.className = "feedback wrong";
+      }
+
+      updateBar();
+    }
+
+    function formatTime(seconds) {
+      const min = Math.floor(seconds / 60);
+      const sec = seconds % 60;
+      return min + ":" + (sec < 10 ? "0" : "") + sec;
+    }
+
+    const countdown = setInterval(function () {
+      if (assessmentFinished) return;
+
+      timeLeft--;
+      timerDisplay.innerHTML = "Time Remaining: " + formatTime(timeLeft);
+
+      if (timeLeft <= 60) timerDisplay.style.background = "#f97316";
+
+      if (timeLeft <= 0) {
+        clearInterval(countdown);
+        timerDisplay.innerHTML = "Time Finished";
+        timerDisplay.style.background = "#ef4444";
+        showResult();
+      }
+    }, 1000);
+
+    function disableAllButtons() {
+      const allButtons = document.querySelectorAll("button");
+      allButtons.forEach(button => button.disabled = true);
+    }
+
+    function getResultMessage() {
+      const percentage = (score / maxScore) * 100;
+      if (percentage >= 80) return "Excellent! You are a Safe Digital Citizen.";
+      if (percentage >= 50) return "Good effort! You understand privacy risks but can improve.";
+      return "Be careful! Review your online sharing and privacy settings.";
+    }
+
+    async function showResult() {
+      const learnerName = document.getElementById("learnerName").value.trim() || "Not provided";
+      const trainerName = document.getElementById("trainerName").value.trim() || "Arman Khan";
+      const message = getResultMessage();
+      const now = new Date();
+
+      const resultData = {
+        title: "Major Delivery 2",
+        date: "06 June 2026",
+        part: "Part 2: Practical Assessment",
+        topic: "Digital Footprint & Online Privacy",
+        learnerName: learnerName,
+        trainerName: trainerName,
+        score: score,
+        maxScore: maxScore,
+        result: message,
+        submittedAt: now.toLocaleString(),
+        timeRemaining: formatTime(Math.max(timeLeft, 0))
+      };
+
+      const result = document.getElementById("result");
+      const notice = document.getElementById("submitNotice");
+
+      result.style.display = "block";
+      result.innerHTML =
+        "<strong>Major Delivery 2</strong><br>" +
+        "Date: 06 June 2026<br>" +
+        "Part 2: Practical Assessment<br><br>" +
+        "<strong>Learner Name:</strong> " + learnerName + "<br>" +
+        "<strong>Trainer / Assessor:</strong> " + trainerName + "<br>" +
+        "<strong>Score:</strong> " + score + " / " + maxScore + "<br>" +
+        "<strong>Result:</strong> " + message + "<br><br>" +
+        "Your result has been submitted.";
+
+      assessmentFinished = true;
+      disableAllButtons();
+
+      notice.style.display = "block";
+
+      if (SCRIPT_URL.includes("PASTE_YOUR")) {
+        notice.innerHTML = "Result shown on screen. To capture results in Google Sheet, paste your Google Apps Script Web App URL inside the HTML file.";
+        return;
+      }
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(resultData)
+        });
+        notice.innerHTML = "Submitted successfully. Thank you.";
+      } catch (error) {
+        notice.innerHTML = "Result shown on screen, but online submission failed. Please inform your trainer.";
+      }
+    }
+  </script>
+</body>
+</html>
